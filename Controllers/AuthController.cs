@@ -52,7 +52,7 @@ namespace CapybaraClickerBackend.Controllers
                 return BadRequest("Wrong password");
             }
 
-            return Ok("User");
+            return Ok("User successful authenticated");
         }
 
         [HttpGet("check")]

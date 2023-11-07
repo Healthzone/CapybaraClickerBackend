@@ -2,6 +2,7 @@
 using CapybaraClickerBackend.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 namespace CapybaraClickerBackend.Controllers
 {
@@ -38,28 +39,28 @@ namespace CapybaraClickerBackend.Controllers
             }
             else
             {
-                _userContext.Remove<Leaderboard>(leaderboradRow);
-                _userContext.Entry<Leaderboard>(leaderboradRow).CurrentValues.SetValues(lb);
+                _userContext.Remove(leaderboradRow);
+                _userContext.Add(lb);
             }
 
             _userContext.SaveChanges();
 
-            return Ok("Leaderboards data was succesfully added\\updated");
+            return Ok("Leaderboards data was successful added\\updated");
         }
 
         [HttpGet("getTopPlayers")]
-        public ActionResult<string[]> GetLeaderboardTop()
+        public ActionResult<string> GetLeaderboardTop()
         {
 
             var querryResult = _userContext.Database
-                .SqlQueryRaw<string>($"SELECT TOP 10\r\n\tUsername = usr.Username,\r\n\tScore = leader.Score\r\n\tfROM dbo.usr usr\r\n\tleft join dbo.Leaderboards leader on usr.UserId = leader.UserId\r\n\tOrder by leader.Score DESC").ToArray();
+                .SqlQuery<LeaderboardTopDto>($"exec [dbo].[GetTop10Players]")?.ToList();
 
             if(querryResult == null)
             {
                 return BadRequest("Cannot get top players");
             }
 
-            return querryResult;
+            return JsonSerializer.Serialize(querryResult, new JsonSerializerOptions { WriteIndented = true}); ;
         }
     }
 }

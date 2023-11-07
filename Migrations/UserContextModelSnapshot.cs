@@ -39,7 +39,7 @@ namespace CapybaraClickerBackend.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Leaderboards");
+                    b.ToTable("Leaderboards", (string)null);
                 });
 
             modelBuilder.Entity("CapybaraClickerBackend.Models.User", b =>
@@ -60,7 +60,7 @@ namespace CapybaraClickerBackend.Migrations
 
                     b.HasKey("UserId");
 
-                    b.ToTable("usr");
+                    b.ToTable("usr", (string)null);
                 });
 
             modelBuilder.Entity("CapybaraClickerBackend.Models.Leaderboard", b =>
