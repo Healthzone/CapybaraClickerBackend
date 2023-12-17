@@ -2,7 +2,9 @@
 using CapybaraClickerBackend.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Text.Unicode;
 
 namespace CapybaraClickerBackend.Controllers
 {
@@ -53,14 +55,18 @@ namespace CapybaraClickerBackend.Controllers
         {
 
             var querryResult = _userContext.Database
-                .SqlQuery<LeaderboardTopDto>($"exec [dbo].[GetTop10Players]")?.ToList();
+                .SqlQuery<LeaderboardTopUser>($"exec [dbo].[GetTop10Players]")?.ToList();
 
             if(querryResult == null)
             {
                 return BadRequest("Cannot get top players");
             }
+            
 
-            return JsonSerializer.Serialize(querryResult, new JsonSerializerOptions { WriteIndented = true}); ;
+            return JsonSerializer.Serialize(new LeaderboardModel(querryResult), new JsonSerializerOptions { 
+                WriteIndented = true,
+                Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.Cyrillic)
+            });
         }
     }
 }

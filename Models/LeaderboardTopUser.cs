@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CapybaraClickerBackend.Models
 {
     [Keyless]
-    public class LeaderboardTopDto
+    public class LeaderboardTopUser
     {
         [Column("Username")]
         public string Username { get; set; } = string.Empty;

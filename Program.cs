@@ -24,6 +24,7 @@ namespace CapybaraClickerBackEnd
             {
                 options.UseSqlServer(builder.Configuration
                     .GetConnectionString("LocalConnectionStr"));
+                    //.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             });
 
             var app = builder.Build();
